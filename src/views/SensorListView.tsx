@@ -1,6 +1,7 @@
-import React, {FunctionComponent, useEffect, useState} from "react";
-import {getAllSensors} from "../service/pi-sensor-service";
-import {SensorData} from "../types";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { getAllSensors } from "../service/pi-sensor-service";
+import { SensorData } from "../types";
+import { ListGroup } from "react-bootstrap";
 
 const SensorListView: FunctionComponent = () => {
     const [sensorData, setSensorData] = useState<SensorData>();
@@ -14,11 +15,14 @@ const SensorListView: FunctionComponent = () => {
     }, []);
 
     return (
-        <ul>
-            {sensorData && Object.entries(sensorData).map(([sensorName, sensorValue]) =>
-                <li key={sensorName}>{sensorName} - {JSON.stringify(sensorValue)}</li>
-            )}
-        </ul>
+        <ListGroup>
+            {sensorData &&
+                Object.entries(sensorData).map(([sensorName, sensorValue]) => (
+                    <ListGroup.Item key={sensorName}>
+                        {sensorName} - {JSON.stringify(sensorValue)}
+                    </ListGroup.Item>
+                ))}
+        </ListGroup>
     );
 };
 

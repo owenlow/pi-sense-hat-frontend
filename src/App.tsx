@@ -1,15 +1,17 @@
-import React from 'react';
-import styles from './App.module.css';
+import React, { FunctionComponent } from "react";
 import SensorListView from "./views/SensorListView";
+import Container from "react-bootstrap/Container";
+import Navbar from "react-bootstrap/Navbar";
 
-function App() {
-  return (
-    <div className={styles.appContainer}>
-      <header className={styles.appHeader}>
-        <SensorListView/>
-      </header>
-    </div>
-  );
-}
+const App: FunctionComponent = () => {
+    return (
+        <Container>
+            <Navbar>
+                <Navbar.Brand>Pi Sensor Site</Navbar.Brand>
+            </Navbar>
+            <SensorListView />
+        </Container>
+    );
+};
 
 export default App;

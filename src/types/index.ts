@@ -1,12 +1,19 @@
-
 type Vector = {
     x: number;
     y: number;
     z: number;
-}
+};
 
-export type SensorName = "timestamp" | "accel" | "gyro" | "compass" | "fusionPose" |
-    "temperature" | "pressure" | "humidity" | "tiltHeading";
+export type SensorName =
+    | "timestamp"
+    | "accel"
+    | "gyro"
+    | "compass"
+    | "fusionPose"
+    | "temperature"
+    | "pressure"
+    | "humidity"
+    | "tiltHeading";
 
 export type SensorData = {
     timestamp: Date;
@@ -20,4 +27,4 @@ export type SensorData = {
     pressure: number;
     humidity: number;
     tiltHeading: number;
-}
+};
