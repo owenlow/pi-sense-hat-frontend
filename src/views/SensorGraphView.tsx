@@ -11,25 +11,41 @@ import {
 } from "recharts";
 import { getSensorGraph } from "../service/pi-sensor-service";
 import { DataPoint, SensorName } from "../types";
+import { Spinner } from "react-bootstrap";
+
+interface SensorGraphViewProps {
+    sensorName: SensorName;
+}
 
 const SensorGraphView: FunctionComponent<
-    RouteComponentProps<{ sensorName: SensorName }>
+    RouteComponentProps<SensorGraphViewProps>
 > = ({ match: { params } }) => {
     const [dataPoints, setDataPoints] = useState<DataPoint[]>();
+    const [fetchPending, setFetchPending] = useState<boolean>(true);
 
     useEffect(() => {
         async function fetchData() {
-            const resultGraphData = await getSensorGraph(params.sensorName);
-            setDataPoints(resultGraphData.dataPoints);
+            try {
+                const resultGraphData = await getSensorGraph(params.sensorName);
+                setDataPoints(resultGraphData.dataPoints);
+            } finally {
+                setFetchPending(false);
+            }
         }
         fetchData();
     });
 
-    return dataPoints ? (
-        <SensorGraph data={dataPoints} />
-    ) : (
-        <div>No data available</div>
-    );
+    if (fetchPending) {
+        return (
+            <div className="d-flex justify-content-center">
+                <Spinner animation={"border"} />
+            </div>
+        );
+    } else if (dataPoints) {
+        return <SensorGraph data={dataPoints} />;
+    } else {
+        return <div>No data available</div>;
+    }
 };
 
 interface SensorGraphProps {

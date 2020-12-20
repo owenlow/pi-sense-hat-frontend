@@ -12,7 +12,9 @@ const App: FunctionComponent = () => {
         <BrowserRouter>
             <Container>
                 <Navbar>
-                    <Navbar.Brand>Pi Sensor Site</Navbar.Brand>
+                    <Navbar.Brand href={sensorListView}>
+                        Pi Sensor Site
+                    </Navbar.Brand>
                 </Navbar>
                 <Switch>
                     <Route
