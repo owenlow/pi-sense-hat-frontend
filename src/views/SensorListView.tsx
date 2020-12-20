@@ -26,4 +26,8 @@ const SensorListView: FunctionComponent = () => {
     );
 };
 
+const path = "/";
+
+export { path };
+
 export default SensorListView;
