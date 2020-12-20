@@ -1,7 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { ListGroup } from "react-bootstrap";
+import { generatePath } from "react-router-dom";
 import { getAllSensors } from "../service/pi-sensor-service";
 import { SensorData } from "../types";
-import { ListGroup } from "react-bootstrap";
+import { sensorGraphView } from "../constants/paths";
 
 const SensorListView: FunctionComponent = () => {
     const [sensorData, setSensorData] = useState<SensorData>();
@@ -17,17 +19,25 @@ const SensorListView: FunctionComponent = () => {
     return (
         <ListGroup>
             {sensorData &&
-                Object.entries(sensorData).map(([sensorName, sensorValue]) => (
-                    <ListGroup.Item key={sensorName}>
-                        {sensorName} - {JSON.stringify(sensorValue)}
-                    </ListGroup.Item>
-                ))}
+                Object.entries(sensorData).map(([sensorName, sensorValue]) =>
+                    // For now, only supporting graphing of number values
+                    typeof sensorValue === "number" ? (
+                        <ListGroup.Item
+                            action
+                            href={generatePath(sensorGraphView, {
+                                sensorName
+                            })}
+                        >
+                            {sensorName} - {JSON.stringify(sensorValue)}
+                        </ListGroup.Item>
+                    ) : (
+                        <ListGroup.Item disabled key={sensorName}>
+                            {sensorName} - {JSON.stringify(sensorValue)}
+                        </ListGroup.Item>
+                    )
+                )}
         </ListGroup>
     );
 };
-
-const path = "/";
-
-export { path };
 
 export default SensorListView;

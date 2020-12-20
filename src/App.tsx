@@ -1,10 +1,11 @@
 import React, { FunctionComponent } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import SensorListView, {
-    path as sensorListViewPath,
-} from "./views/SensorListView";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
+
+import SensorListView from "./views/SensorListView";
+import SensorGraphView from "./views/SensorGraphView";
+import { sensorGraphView, sensorListView } from "./constants/paths";
 
 const App: FunctionComponent = () => {
     return (
@@ -14,9 +15,16 @@ const App: FunctionComponent = () => {
                     <Navbar.Brand>Pi Sensor Site</Navbar.Brand>
                 </Navbar>
                 <Switch>
-                    <Route exact={true} path={sensorListViewPath}>
-                        <SensorListView />
-                    </Route>
+                    <Route
+                        exact={true}
+                        path={sensorListView}
+                        component={SensorListView}
+                    />
+                    <Route
+                        exact={true}
+                        path={sensorGraphView}
+                        component={SensorGraphView}
+                    />
                 </Switch>
             </Container>
         </BrowserRouter>

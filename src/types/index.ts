@@ -28,3 +28,13 @@ export type SensorData = {
     humidity: number;
     tiltHeading: number;
 };
+
+// Format used in Recharts graph
+export type DataPoint = {
+    time: number;
+    value: number;
+};
+
+export type GetSensorGraphResult = {
+    dataPoints: DataPoint[];
+};
