@@ -1,42 +1,31 @@
-import { GetSensorGraphResult, SensorData, SensorName } from "../types";
+import {
+    DataPoint,
+    GetSensorGraphResult,
+    SensorData,
+    SensorName
+} from "../types";
+
+const SERVICE_BASE_URL = "http://hermes:3000";
 
 export async function getAllSensors(): Promise<SensorData> {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            resolve({
-                temperature: 30.4,
-                humidity: 90,
-                accel: { x: 1, y: 1, z: 1 },
-                compass: { x: 1, y: 1, z: 1 },
-                fusionPose: { x: 1, y: 1, z: 1 },
-                gyro: { x: 1, y: 1, z: 1 },
-                pressure: 1,
-                tiltHeading: 1,
-                timestamp: new Date()
-            });
-        }, 1000);
-    });
+    const result = await fetch(`${SERVICE_BASE_URL}/sensors`);
+    if (result.status >= 400) {
+        console.error(`Error in getAllSensors, code: ${result.status}`);
+        return {} as SensorData;
+    } else {
+        return (await result.json()) as SensorData;
+    }
 }
 
 export async function getSensorGraph(
     sensorName: SensorName
 ): Promise<GetSensorGraphResult> {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            const dummyResponseData = [
-                [0, 30],
-                [1, 31],
-                [2, 30],
-                [3, 30.5],
-                [4, 32]
-            ];
-
-            resolve({
-                dataPoints: dummyResponseData.map(([x, y]) => ({
-                    time: x,
-                    value: y
-                }))
-            });
-        }, 1000);
-    });
+    let dataPoints: DataPoint[] = [];
+    const result = await fetch(`${SERVICE_BASE_URL}/sensors/${sensorName}`);
+    if (result.status >= 400) {
+        console.error(`Error in getSensorGraph, code: ${result.status}`);
+    } else {
+        dataPoints = (await result.json()) as DataPoint[];
+    }
+    return { dataPoints };
 }

@@ -29,9 +29,9 @@ export type SensorData = {
     tiltHeading: number;
 };
 
-// Format used in Recharts graph
+// Format used in Recharts graph, matches db schema
 export type DataPoint = {
-    time: number;
+    timestamp: number;
     value: number;
 };
 
