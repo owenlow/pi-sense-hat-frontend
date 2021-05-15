@@ -5,7 +5,7 @@ import {
     SensorName
 } from "../types";
 
-const SERVICE_BASE_URL = "http://hermes:3000";
+const SERVICE_BASE_URL = "http://eos:3000";
 
 export async function getAllSensors(): Promise<SensorData> {
     const result = await fetch(`${SERVICE_BASE_URL}/sensors`);

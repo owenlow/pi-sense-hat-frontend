@@ -9,9 +9,10 @@ import {
     XAxis,
     YAxis
 } from "recharts";
-import { getSensorGraph } from "../service/pi-sensor-service";
-import { DataPoint, SensorName } from "../types";
+import { getSensorGraph } from "../../service/pi-sensor-service";
+import { DataPoint, SensorName } from "../../types";
 import { Spinner } from "react-bootstrap";
+import { useRouter } from "next/router";
 
 const AUTO_REFRESH_INTERVAL_MS = 1000 * 60;
 
@@ -19,15 +20,12 @@ interface SensorGraphViewProps {
     sensorName: SensorName;
 }
 
-const SensorGraphView: FunctionComponent<
-    RouteComponentProps<SensorGraphViewProps>
-> = ({
-    match: {
-        params: { sensorName }
-    }
-}) => {
+const SensorGraphView: FunctionComponent = () => {
     const [dataPoints, setDataPoints] = useState<DataPoint[]>();
     const [fetchPending, setFetchPending] = useState<boolean>(true);
+    const router = useRouter();
+    const sensorName = "temperature";
+    console.log(router.query);
 
     useEffect(() => {
         async function fetchData() {

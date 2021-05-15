@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 
-import SensorListView from "./views/SensorListView";
-import SensorGraphView from "./views/SensorGraphView";
+import Index from "./pages";
+import SensorId from "./pages/sensor/[sensorName]";
 import { sensorGraphView, sensorListView } from "./constants/paths";
 
 const App: FunctionComponent = () => {
@@ -20,12 +20,12 @@ const App: FunctionComponent = () => {
                     <Route
                         exact={true}
                         path={sensorListView}
-                        component={SensorListView}
+                        component={Index}
                     />
                     <Route
                         exact={true}
                         path={sensorGraphView}
-                        component={SensorGraphView}
+                        component={SensorId}
                     />
                 </Switch>
             </Container>
