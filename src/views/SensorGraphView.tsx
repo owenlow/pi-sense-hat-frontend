@@ -45,7 +45,7 @@ const SensorGraphView: FunctionComponent<
             timeout = setTimeout(periodicFetcher, AUTO_REFRESH_INTERVAL_MS);
         })();
         return () => clearTimeout(timeout);
-    }, []);
+    }, [sensorName]);
 
     if (fetchPending) {
         return (
