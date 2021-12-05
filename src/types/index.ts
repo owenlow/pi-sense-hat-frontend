@@ -35,6 +35,10 @@ export type DataPoint = {
     value: number;
 };
 
-export type GetSensorGraphResult = {
-    dataPoints: DataPoint[];
-};
+export interface GetSensorsResponse {
+    data: SensorData;
+}
+
+export interface GetSensorResponse {
+    data: DataPoint[];
+}

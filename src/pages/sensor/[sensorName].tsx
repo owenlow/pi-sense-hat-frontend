@@ -9,10 +9,11 @@ import {
     XAxis,
     YAxis
 } from "recharts";
-import { getSensorGraph } from "../../service/pi-sensor-service";
+import { getSensor } from "../../service/pi-sensor-service";
 import { DataPoint, SensorName } from "../../types";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
+import BasicLayout from "../../components/BasicLayout";
 
 const AUTO_REFRESH_INTERVAL_MS = 1000 * 60;
 
@@ -24,14 +25,15 @@ const SensorGraphView: FunctionComponent = () => {
     const [dataPoints, setDataPoints] = useState<DataPoint[]>();
     const [fetchPending, setFetchPending] = useState<boolean>(true);
     const router = useRouter();
+    //TODO: fix with dynamic query value
     const sensorName = "temperature";
     console.log(router.query);
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const resultGraphData = await getSensorGraph(sensorName);
-                setDataPoints(resultGraphData.dataPoints);
+                const resultGraphData = await getSensor(sensorName);
+                setDataPoints(resultGraphData.data);
             } finally {
                 setFetchPending(false);
             }
@@ -45,17 +47,19 @@ const SensorGraphView: FunctionComponent = () => {
         return () => clearTimeout(timeout);
     }, []);
 
+    let content: JSX.Element;
     if (fetchPending) {
-        return (
+        content = (
             <div className="d-flex justify-content-center">
                 <Spinner animation={"border"} />
             </div>
         );
     } else if (dataPoints && dataPoints.length > 0) {
-        return <SensorGraph data={dataPoints} sensorName={sensorName} />;
+        content = <SensorGraph data={dataPoints} sensorName={sensorName} />;
     } else {
-        return <div>No data available</div>;
+        content = <div>No data available</div>;
     }
+    return <BasicLayout>{content}</BasicLayout>;
 };
 
 interface SensorGraphProps {

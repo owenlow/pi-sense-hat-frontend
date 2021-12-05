@@ -1,0 +1,1 @@
+export { getAllReadings } from "./sensors";

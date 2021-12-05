@@ -1,31 +1,31 @@
+import axios from "axios";
 import {
-    DataPoint,
-    GetSensorGraphResult,
+    GetSensorResponse,
+    GetSensorsResponse,
     SensorData,
     SensorName
 } from "../types";
 
-const SERVICE_BASE_URL = "http://eos:3000";
+const SERVICE_BASE_URL = "http://localhost:3000/api";
 
-export async function getAllSensors(): Promise<SensorData> {
-    const result = await fetch(`${SERVICE_BASE_URL}/sensors`);
+export async function getAllSensors(): Promise<GetSensorsResponse> {
+    const result = await axios.get<GetSensorsResponse>(
+        `${SERVICE_BASE_URL}/sensors`
+    );
     if (result.status >= 400) {
-        console.error(`Error in getAllSensors, code: ${result.status}`);
-        return {} as SensorData;
-    } else {
-        return (await result.json()) as SensorData;
+        throw new Error(`Error in getAllSensors, code: ${result.status}`);
     }
+    return result.data;
 }
 
-export async function getSensorGraph(
+export async function getSensor(
     sensorName: SensorName
-): Promise<GetSensorGraphResult> {
-    let dataPoints: DataPoint[] = [];
-    const result = await fetch(`${SERVICE_BASE_URL}/sensors/${sensorName}`);
+): Promise<GetSensorResponse> {
+    const result = await axios.get<GetSensorResponse>(
+        `${SERVICE_BASE_URL}/sensors/${sensorName}`
+    );
     if (result.status >= 400) {
-        console.error(`Error in getSensorGraph, code: ${result.status}`);
-    } else {
-        dataPoints = (await result.json()) as DataPoint[];
+        throw new Error(`Error in getSensorGraph, code: ${result.status}`);
     }
-    return { dataPoints };
+    return result.data;
 }
