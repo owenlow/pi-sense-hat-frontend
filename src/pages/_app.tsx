@@ -3,8 +3,11 @@ import Navbar from "react-bootstrap/Navbar";
 import { sensorListView } from "../constants/paths";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { initCronTasks } from "../tasks";
 
 // import App from 'next/app'
+//TODO Where else to put this?
+initCronTasks();
 
 // @ts-ignore
 function MyApp({ Component, pageProps }) {

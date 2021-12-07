@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
 import {
     CartesianGrid,
     Line,
@@ -13,7 +12,6 @@ import { getSensor } from "../../service/pi-sensor-service";
 import { DataPoint, SensorName } from "../../types";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
-import BasicLayout from "../../components/BasicLayout";
 import { NextPage } from "next";
 
 const AUTO_REFRESH_INTERVAL_MS = 1000 * 60;
@@ -49,19 +47,17 @@ const SensorGraphView: NextPage = () => {
         return () => clearTimeout(timeout);
     }, []);
 
-    let content: JSX.Element;
     if (fetchPending) {
-        content = (
+        return (
             <div className="d-flex justify-content-center">
                 <Spinner animation={"border"} />
             </div>
         );
     } else if (dataPoints && dataPoints.length > 0) {
-        content = <SensorGraph data={dataPoints} sensorName={sensorName} />;
+        return <SensorGraph data={dataPoints} sensorName={sensorName} />;
     } else {
-        content = <div>No data available</div>;
+        return <div>No data available</div>;
     }
-    return <BasicLayout>{content}</BasicLayout>;
 };
 
 interface SensorGraphProps {
