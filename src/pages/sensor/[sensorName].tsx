@@ -14,14 +14,16 @@ import { DataPoint, SensorName } from "../../types";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
 import BasicLayout from "../../components/BasicLayout";
+import { NextPage } from "next";
 
 const AUTO_REFRESH_INTERVAL_MS = 1000 * 60;
 
+// TODO: can the next path variable be typed?
 interface SensorGraphViewProps {
     sensorName: SensorName;
 }
 
-const SensorGraphView: FunctionComponent = () => {
+const SensorGraphView: NextPage = () => {
     const [dataPoints, setDataPoints] = useState<DataPoint[]>();
     const [fetchPending, setFetchPending] = useState<boolean>(true);
     const router = useRouter();
@@ -33,7 +35,7 @@ const SensorGraphView: FunctionComponent = () => {
         async function fetchData() {
             try {
                 const resultGraphData = await getSensor(sensorName);
-                setDataPoints(resultGraphData.data);
+                setDataPoints(resultGraphData?.data);
             } finally {
                 setFetchPending(false);
             }

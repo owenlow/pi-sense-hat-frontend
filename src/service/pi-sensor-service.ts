@@ -1,16 +1,16 @@
 import axios from "axios";
-import {
-    GetSensorResponse,
-    GetSensorsResponse,
-    SensorData,
-    SensorName
-} from "../types";
+import { GetSensorResponse, GetSensorsResponse, SensorName } from "../types";
 
-const SERVICE_BASE_URL = "http://localhost:3000/api";
+// Client side calls need a base URL, server side calls in getInitialProps will pass their own
+function buildDefaultBaseUrl() {
+    return `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+}
 
-export async function getAllSensors(): Promise<GetSensorsResponse> {
+export async function getAllSensors(
+    baseUrl = buildDefaultBaseUrl()
+): Promise<GetSensorsResponse> {
     const result = await axios.get<GetSensorsResponse>(
-        `${SERVICE_BASE_URL}/sensors`
+        `${baseUrl}/api/sensors`
     );
     if (result.status >= 400) {
         throw new Error(`Error in getAllSensors, code: ${result.status}`);
@@ -19,13 +19,18 @@ export async function getAllSensors(): Promise<GetSensorsResponse> {
 }
 
 export async function getSensor(
-    sensorName: SensorName
-): Promise<GetSensorResponse> {
-    const result = await axios.get<GetSensorResponse>(
-        `${SERVICE_BASE_URL}/sensors/${sensorName}`
-    );
-    if (result.status >= 400) {
-        throw new Error(`Error in getSensorGraph, code: ${result.status}`);
+    sensorName: SensorName,
+    host = buildDefaultBaseUrl()
+): Promise<GetSensorResponse | undefined> {
+    try {
+        const result = await axios.get<GetSensorResponse>(
+            `${host}/api/sensors/${sensorName}`
+        );
+        if (result.status >= 400) {
+            console.error(`Error in getSensorGraph, code: ${result.status}`);
+        }
+        return result.data;
+    } catch (e) {
+        console.error("caught", e);
     }
-    return result.data;
 }
